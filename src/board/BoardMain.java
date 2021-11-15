@@ -10,6 +10,8 @@ public class BoardMain {
 
 	public static void main(String[] args) {
 		
+		System.out.println("==프로그램 시작==");
+		
 		Scanner sc = new Scanner(System.in); 		
 		List<Article> articles = new ArrayList<>();
 		int lastId = 1;
@@ -24,15 +26,17 @@ public class BoardMain {
 				continue;
 			}
 			
-			if(command.equals("list")) {
+			if(command.equals("article list")) {
 				System.out.printf("=== 게시물 목록 ===\n");
-				for(int i = 0; i < articles.size(); i++) {
+				
+				System.out.println("번호  |     날짜    |  제목  |  조회수");
+				for(int i = articles.size() - 1; i >= 0 ; i--) {
 					Article currentArticle = articles.get(i);
-					System.out.printf("%d  | %s | %s\n", currentArticle.id, currentArticle.regDate, currentArticle.title);					
+					System.out.printf("%3d  | %4s | %4s  | %4d\n", currentArticle.id, currentArticle.regDate, currentArticle.title,currentArticle.hit);					
 				}
 			}
 			
-			else if(command.equals("write")) {
+			else if(command.equals("article write")) {
 				
 				int id = lastId++;
 				
@@ -47,13 +51,13 @@ public class BoardMain {
 				Article article = new Article(id, title, body, currentDate);				
 				articles.add(article);
 				
-				System.out.printf("게시물 등록이 완료되었습니다.\n");
+				System.out.printf("%d번 게시물 등록이 완료되었습니다.\n",id);
 				
-			} else if(command.startsWith("detail ")) {
+			} else if(command.startsWith("article detail ")) {
 				
 				String[] commandBits = command.split(" ");
 			
-				int id = Integer.parseInt(commandBits[1]);
+				int id = Integer.parseInt(commandBits[2]);
 				
 				Article targetArticle = null;
 				
@@ -70,17 +74,20 @@ public class BoardMain {
 					continue;
 				}
 				
+				targetArticle.increaseHit();
+				
 				System.out.printf("번호 : %d\n", targetArticle.id );
 				System.out.printf("제목 : %s\n", targetArticle.title);
 				System.out.printf("내용 : %s\n", targetArticle.body);
 				System.out.printf("작성일 : %s\n", targetArticle.regDate);
+				System.out.printf("조회수 : %d\n", targetArticle.hit);
 				
 				
-			} else if(command.startsWith("delete ")) {
+			} else if(command.startsWith("article delete ")) {
 				
 				String[] commandBits = command.split(" ");
 				
-				int id = Integer.parseInt(commandBits[1]);
+				int id = Integer.parseInt(commandBits[2]);
 				
 				Article targetArticle = null;
 				
@@ -100,11 +107,11 @@ public class BoardMain {
 				articles.remove(targetArticle);
 				System.out.printf("%d번 게시물이 삭제되었습니다.\n", id);
 				
-			} else if(command.startsWith("modify ")) {
+			} else if(command.startsWith("article modify ")) {
 				
 				String[] commandBits = command.split(" ");
 				
-				int id = Integer.parseInt(commandBits[1]);
+				int id = Integer.parseInt(commandBits[2]);
 				
 				Article targetArticle = null;
 				
@@ -120,6 +127,7 @@ public class BoardMain {
 					System.out.printf("%d번 게시물이 존재하지 않습니다\n", id);
 					continue;
 				}
+				
 				System.out.printf("제목 : ");
 				String title = sc.nextLine();
 				System.out.printf("내용 : ");
@@ -133,13 +141,8 @@ public class BoardMain {
 			} else {
 				System.out.printf("%s는 존재하지 않는 명령어입니다.\n", command);
 			}
-			
-			
 		}
-		
-		
 	}
-
 }
 
 
