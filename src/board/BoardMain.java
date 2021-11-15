@@ -7,13 +7,19 @@ import java.util.Scanner;
 import board.util.Util;
 
 public class BoardMain {
+	private static List<Article> articles;
+	
+	static{
+		articles = new ArrayList<>();
+	}
 
 	public static void main(String[] args) {
-		
 		System.out.println("==프로그램 시작==");
 		
+		makeTestData();
+		
 		Scanner sc = new Scanner(System.in); 		
-		List<Article> articles = new ArrayList<>();
+		
 		int lastId = 1;
 		
 		while(true) {
@@ -142,6 +148,14 @@ public class BoardMain {
 				System.out.printf("%s는 존재하지 않는 명령어입니다.\n", command);
 			}
 		}
+	}
+
+	private static void makeTestData() {
+		System.out.println("테스트를 위한 데이터를 생성합니다.");
+		
+		articles.add(new Article(1,"제목1","내용1",Util.getCurrentDate(),11));
+		articles.add(new Article(2,"제목2","내용2",Util.getCurrentDate(),22));
+		articles.add(new Article(3,"제목3","내용3",Util.getCurrentDate(),33));
 	}
 }
 

@@ -9,16 +9,19 @@ public class Article {
 	int hit; // 게시물 조회수
 	
 	public Article(int id, String title, String body, String regDate) {
-		
+		this(id,title,body,regDate,0);
+	}
+
+	public Article(int id, String title, String body, String regDate, int hit) {
 		this.id = id;
 		this.title = title;
 		this.body = body;
 		this.regDate = regDate;
-		this.hit = 0;
+		this.hit = hit;
 	}
-	
+
 	public void increaseHit() {
 		hit++;
 	}
-	
+
 }
