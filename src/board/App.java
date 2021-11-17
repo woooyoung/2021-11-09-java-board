@@ -5,13 +5,16 @@ import java.util.List;
 import java.util.Scanner;
 
 import board.dto.Article;
+import board.dto.Member;
 import board.util.Util;
 
 public class App {
-	private static List<Article> articles;
+	private List<Article> articles;
+	private List<Member> members;
 
 	App() {
 		articles = new ArrayList<>();
+		members = new ArrayList<>();
 	}
 
 	public void start() {
@@ -30,8 +33,44 @@ public class App {
 			if (command.length() == 0) {
 				continue;
 			}
+			if (command.equals("member join")) {
 
-			if (command.startsWith("article list")) {
+				int id = members.size() + 1;
+
+				System.out.printf("로그인 아이디 : ");
+				String loginId = sc.nextLine();
+
+				String loginPw = null;
+				String loginPwConfirm = null;
+
+				while (true) {
+					System.out.printf("로그인 비밀번호 : ");
+					loginPw = sc.nextLine();
+
+					System.out.printf("로그인 비밀번호 확인 : ");
+					loginPwConfirm = sc.nextLine();
+
+					if (loginPw.equals(loginPwConfirm) == false) {
+						System.out.println("비밀번호를 다시 입력해주세요.");
+						continue;
+					}
+
+					break;
+				}
+
+				System.out.printf("이름 : ");
+				String name = sc.nextLine();
+
+				String regDate = Util.getCurrentDate();
+
+				Member member = new Member(id, regDate, loginId, loginPw, name);
+				members.add(member);
+
+				System.out.printf("%d번 회원 가입이 완료되었습니다.\n", id);
+
+			}
+
+			else if (command.startsWith("article list")) {
 
 				if (articles.size() == 0) {
 					System.out.println("게시물이 없습니다.");
