@@ -31,12 +31,39 @@ public class App {
 				continue;
 			}
 
-			if (command.equals("article list")) {
-				System.out.printf("=== 게시물 목록 ===\n");
+			if (command.startsWith("article list")) {
 
+				if (articles.size() == 0) {
+					System.out.println("게시물이 없습니다.");
+					continue;
+				}
+
+				String searchKeyword = command.substring("article list".length()).trim();
+
+				List<Article> forListArticles = articles;
+
+				if (searchKeyword.length() > 0) {
+					forListArticles = new ArrayList<>();
+
+					for (Article article : articles) {
+						if (article.title.contains(searchKeyword)) {
+							forListArticles.add(article);
+						}
+					}
+
+					if (forListArticles.size() == 0) {
+						System.out.println("검색결과가 존재하지 않습니다.");
+						continue;
+					}
+				}
+
+//				System.out.printf("검색어 : %s\n",searchKeyword);
+
+				System.out.printf("=== 게시물 목록 ===\n");
 				System.out.println("번호  |     날짜    |  제목  |  조회수");
-				for (int i = articles.size() - 1; i >= 0; i--) {
-					Article currentArticle = articles.get(i);
+
+				for (int i = forListArticles.size() - 1; i >= 0; i--) {
+					Article currentArticle = forListArticles.get(i);
 					System.out.printf("%3d  | %4s | %4s  | %4d\n", currentArticle.id, currentArticle.regDate,
 							currentArticle.title, currentArticle.hit);
 				}
@@ -142,13 +169,6 @@ public class App {
 
 	private Article getArticleById(int id) {
 
-//		for (int i = 0; i < articles.size(); i++) {
-//			Article article = articles.get(i);
-//			
-//			if(article.id == id) {
-//				return article;
-//			}
-//		}
 		int index = getArticleIndexById(id);
 
 		if (index != -1) {
