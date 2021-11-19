@@ -6,10 +6,14 @@ import java.util.Scanner;
 import board.dto.Member;
 import board.util.Util;
 
-public class MemberController {
+public class MemberController extends Controller {
 
 	private Scanner sc;
 	private List<Member> members;
+
+	public void doAction(String command) {
+		
+	}
 
 	public MemberController(Scanner sc, List<Member> members) {
 		this.sc = sc;

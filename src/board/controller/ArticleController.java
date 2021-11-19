@@ -5,10 +5,13 @@ import java.util.List;
 import java.util.Scanner;
 
 import board.dto.Article;
-import board.dto.Member;
 import board.util.Util;
 
-public class ArticleController {
+public class ArticleController extends Controller {
+	
+	public void doAction(String command) {
+
+	}
 
 	private Scanner sc;
 	private List<Article> articles;
