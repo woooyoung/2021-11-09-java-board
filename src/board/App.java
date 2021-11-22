@@ -64,7 +64,7 @@ public class App {
 				continue;
 			}
 
-			controller.doAction(command);
+			controller.doAction(command, actionMethodName);
 
 		}
 		sc.close();

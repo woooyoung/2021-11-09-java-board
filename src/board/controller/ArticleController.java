@@ -8,13 +8,34 @@ import board.dto.Article;
 import board.util.Util;
 
 public class ArticleController extends Controller {
-	
-	public void doAction(String command) {
-
-	}
 
 	private Scanner sc;
 	private List<Article> articles;
+	private String command;
+	private String actionMethodName;
+
+	public void doAction(String command, String actionMethodName) {
+		this.command = command;
+		this.actionMethodName = actionMethodName;
+
+		switch (actionMethodName) {
+		case "list":
+			showList();
+			break;
+		case "detail":
+			showDetail();
+			break;
+		case "write":
+			doWrite();
+			break;
+		case "modify":
+			doModify();
+			break;
+		case "delete":
+			doDelete();
+			break;
+		}
+	}
 
 	public ArticleController(Scanner sc, List<Article> articles) {
 		this.sc = sc;
@@ -38,7 +59,7 @@ public class ArticleController extends Controller {
 		System.out.printf("%d번 게시물 등록이 완료되었습니다.\n", id);
 	}
 
-	public void showList(String command) {
+	public void showList() {
 
 		if (articles.size() == 0) {
 			System.out.println("게시물이 없습니다.");
@@ -74,7 +95,7 @@ public class ArticleController extends Controller {
 		}
 	}
 
-	public void showDetail(String command) {
+	public void showDetail() {
 		String[] commandBits = command.split(" ");
 
 		int id = Integer.parseInt(commandBits[2]);
@@ -95,7 +116,7 @@ public class ArticleController extends Controller {
 		System.out.printf("조회수 : %d\n", targetArticle.hit);
 	}
 
-	public void doModify(String command) {
+	public void doModify() {
 		String[] commandBits = command.split(" ");
 
 		int id = Integer.parseInt(commandBits[2]);
@@ -119,7 +140,7 @@ public class ArticleController extends Controller {
 
 	}
 
-	public void doDelte(String command) {
+	public void doDelete() {
 		String[] commandBits = command.split(" ");
 
 		int id = Integer.parseInt(commandBits[2]);
