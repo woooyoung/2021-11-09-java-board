@@ -14,6 +14,12 @@ public class ArticleController extends Controller {
 	private String command;
 	private String actionMethodName;
 
+	public ArticleController(Scanner sc) {
+		this.sc = sc;
+
+		articles = new ArrayList<>();
+	}
+
 	public void doAction(String command, String actionMethodName) {
 		this.command = command;
 		this.actionMethodName = actionMethodName;
@@ -37,12 +43,7 @@ public class ArticleController extends Controller {
 		}
 	}
 
-	public ArticleController(Scanner sc, List<Article> articles) {
-		this.sc = sc;
-		this.articles = articles;
-	}
-
-	public void doWrite() {
+	private void doWrite() {
 		int id = articles.size() + 1;
 
 		System.out.printf("제목 : ");
@@ -59,7 +60,7 @@ public class ArticleController extends Controller {
 		System.out.printf("%d번 게시물 등록이 완료되었습니다.\n", id);
 	}
 
-	public void showList() {
+	private void showList() {
 
 		if (articles.size() == 0) {
 			System.out.println("게시물이 없습니다.");
@@ -95,7 +96,7 @@ public class ArticleController extends Controller {
 		}
 	}
 
-	public void showDetail() {
+	private void showDetail() {
 		String[] commandBits = command.split(" ");
 
 		int id = Integer.parseInt(commandBits[2]);
@@ -116,7 +117,7 @@ public class ArticleController extends Controller {
 		System.out.printf("조회수 : %d\n", targetArticle.hit);
 	}
 
-	public void doModify() {
+	private void doModify() {
 		String[] commandBits = command.split(" ");
 
 		int id = Integer.parseInt(commandBits[2]);
@@ -140,7 +141,7 @@ public class ArticleController extends Controller {
 
 	}
 
-	public void doDelete() {
+	private void doDelete() {
 		String[] commandBits = command.split(" ");
 
 		int id = Integer.parseInt(commandBits[2]);

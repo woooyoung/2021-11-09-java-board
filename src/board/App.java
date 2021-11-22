@@ -1,30 +1,19 @@
 package board;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 import board.controller.ArticleController;
 import board.controller.Controller;
 import board.controller.MemberController;
-import board.dto.Article;
-import board.dto.Member;
 
 public class App {
-	private List<Article> articles;
-	private List<Member> members;
-
-	App() {
-		articles = new ArrayList<>();
-		members = new ArrayList<>();
-	}
 
 	public void start() {
 		System.out.println("==프로그램 시작==");
 		Scanner sc = new Scanner(System.in);
 
-		MemberController memberController = new MemberController(sc, members);
-		ArticleController articleController = new ArticleController(sc, articles);
+		MemberController memberController = new MemberController(sc);
+		ArticleController articleController = new ArticleController(sc);
 
 		articleController.makeTestData();
 
