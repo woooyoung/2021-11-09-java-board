@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import board.dto.Article;
 import board.dto.Member;
 import board.util.Util;
 
@@ -33,6 +32,9 @@ public class MemberController extends Controller {
 		case "login":
 			doLogin();
 			break;
+		case "logout":
+			doLogout();
+			break;
 		case "whoami":
 			showWhoAmI();
 			break;
@@ -40,6 +42,20 @@ public class MemberController extends Controller {
 			System.out.println("존재하지 않는 명령어입니다.");
 			break;
 		}
+	}
+
+	private boolean isLogined() {
+		return loginedMember != null;
+	}
+
+	private void doLogout() {
+		if (isLogined() == false) {
+			System.out.println("로그인 상태가 아닙니다.");
+			return;
+		}
+
+		loginedMember = null;
+		System.out.println("로그아웃 되었습니다.");
 	}
 
 	private void showWhoAmI() {
@@ -55,6 +71,11 @@ public class MemberController extends Controller {
 	}
 
 	private void doLogin() {
+		if (isLogined()) {
+			System.out.println("이미 로그인 되어 있습니다.");
+			return;
+		}
+
 		System.out.printf("로그인 아이디 : ");
 		String loginId = sc.nextLine();
 		System.out.printf("로그인 비밀번호 : ");
