@@ -59,9 +59,9 @@ public class ArticleController extends Controller {
 		System.out.printf("내용 : ");
 		String body = sc.nextLine();
 
-		String currentDate = Util.getCurrentDate();
+		String regDate = Util.getCurrentDate();
 
-		Article article = new Article(id, currentDate, title, body);
+		Article article = new Article(id, regDate, loginedMember.id, title, body);
 		articles.add(article);
 
 		System.out.printf("%d번 게시물 등록이 완료되었습니다.\n", id);
@@ -94,11 +94,11 @@ public class ArticleController extends Controller {
 		}
 
 		System.out.printf("=== 게시물 목록 ===\n");
-		System.out.println("번호  |     날짜    |  제목  |  조회수");
+		System.out.println("번호  |   작성자  |  제목  |  조회수");
 
 		for (int i = forListArticles.size() - 1; i >= 0; i--) {
 			Article currentArticle = forListArticles.get(i);
-			System.out.printf("%3d  | %4s | %4s  | %4d\n", currentArticle.id, currentArticle.regDate,
+			System.out.printf("%3d  | %6d  | %4s  | %4d\n", currentArticle.id, currentArticle.memberId,
 					currentArticle.title, currentArticle.hit);
 		}
 	}
@@ -119,6 +119,7 @@ public class ArticleController extends Controller {
 
 		System.out.printf("번호 : %d\n", targetArticle.id);
 		System.out.printf("제목 : %s\n", targetArticle.title);
+		System.out.printf("작성자 : %d\n", targetArticle.memberId);
 		System.out.printf("내용 : %s\n", targetArticle.body);
 		System.out.printf("작성일 : %s\n", targetArticle.regDate);
 		System.out.printf("조회수 : %d\n", targetArticle.hit);
@@ -190,9 +191,9 @@ public class ArticleController extends Controller {
 	public void makeTestData() {
 		System.out.println("테스트를 위한 게시물 데이터를 생성합니다.");
 
-		articles.add(new Article(1, Util.getCurrentDate(), "제목1", "내용1", 11));
-		articles.add(new Article(2, Util.getCurrentDate(), "제목2", "내용2", 22));
-		articles.add(new Article(3, Util.getCurrentDate(), "제목3", "내용3", 33));
+		articles.add(new Article(1, Util.getCurrentDate(), 1, "제목1", "내용1", 11));
+		articles.add(new Article(2, Util.getCurrentDate(), 2, "제목2", "내용2", 22));
+		articles.add(new Article(3, Util.getCurrentDate(), 2, "제목3", "내용3", 33));
 	}
 
 }
