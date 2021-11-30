@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import board.container.Container;
 import board.dto.Article;
+import board.dto.Member;
 import board.util.Util;
 
 public class ArticleController extends Controller {
@@ -17,7 +19,7 @@ public class ArticleController extends Controller {
 	public ArticleController(Scanner sc) {
 		this.sc = sc;
 
-		articles = new ArrayList<>();
+		articles = Container.articleDao.articles;
 	}
 
 	public void doAction(String command, String actionMethodName) {
@@ -90,12 +92,24 @@ public class ArticleController extends Controller {
 		}
 
 		System.out.printf("=== 게시물 목록 ===\n");
-		System.out.println("번호  |   작성자  |  제목  |  조회수");
+		System.out.println("번호  |   작성자   |  제목   |  조회수");
 
 		for (int i = forListArticles.size() - 1; i >= 0; i--) {
 			Article currentArticle = forListArticles.get(i);
-			System.out.printf("%3d  | %6d  | %4s  | %4d\n", currentArticle.id, currentArticle.memberId,
-					currentArticle.title, currentArticle.hit);
+
+			String writerName = null;
+
+			List<Member> members = Container.memberDao.members;
+
+			for (Member member : members) {
+				if (currentArticle.memberId == member.id) {
+					writerName = member.name;
+					break;
+				}
+			}
+
+			System.out.printf("%3d  | %6s  | %4s  | %4d\n", currentArticle.id, writerName, currentArticle.title,
+					currentArticle.hit);
 		}
 	}
 
