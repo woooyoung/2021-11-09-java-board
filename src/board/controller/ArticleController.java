@@ -49,7 +49,7 @@ public class ArticleController extends Controller {
 	}
 
 	private void doWrite() {
-		int id = articles.size() + 1;
+		int id = Container.articleDao.getNewId();
 
 		System.out.printf("제목 : ");
 		String title = sc.nextLine();
@@ -60,7 +60,8 @@ public class ArticleController extends Controller {
 		String regDate = Util.getCurrentDate();
 
 		Article article = new Article(id, regDate, loginedMember.id, title, body);
-		articles.add(article);
+
+		Container.articleDao.add(article);
 
 		System.out.printf("%d번 게시물 등록이 완료되었습니다.\n", id);
 	}
@@ -211,9 +212,12 @@ public class ArticleController extends Controller {
 	public void makeTestData() {
 		System.out.println("테스트를 위한 게시물 데이터를 생성합니다.");
 
-		articles.add(new Article(1, Util.getCurrentDate(), 1, "제목1", "내용1", 11));
-		articles.add(new Article(2, Util.getCurrentDate(), 2, "제목2", "내용2", 22));
-		articles.add(new Article(3, Util.getCurrentDate(), 2, "제목3", "내용3", 33));
+		Container.articleDao
+				.add(new Article(Container.articleDao.getNewId(), Util.getCurrentDate(), 1, "제목1", "내용1", 11));
+		Container.articleDao
+				.add(new Article(Container.articleDao.getNewId(), Util.getCurrentDate(), 2, "제목2", "내용2", 22));
+		Container.articleDao
+				.add(new Article(Container.articleDao.getNewId(), Util.getCurrentDate(), 2, "제목3", "내용3", 33));
 	}
 
 }
