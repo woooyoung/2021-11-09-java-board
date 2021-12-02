@@ -1,23 +1,25 @@
 package board.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 import board.container.Container;
 import board.dto.Article;
 import board.dto.Member;
+import board.service.ArticleService;
 import board.util.Util;
 
 public class ArticleController extends Controller {
 
 	private Scanner sc;
-	private List<Article> articles;
 	private String command;
 	private String actionMethodName;
+	private ArticleService articleService;
 
 	public ArticleController(Scanner sc) {
 		this.sc = sc;
+
+		articleService = Container.articleService;
 
 	}
 
@@ -69,7 +71,7 @@ public class ArticleController extends Controller {
 
 		String searchKeyword = command.substring("article list".length()).trim();
 
-		List<Article> forPrintArticles = Container.articleService.getForPrintArticles(searchKeyword);
+		List<Article> forPrintArticles = articleService.getForPrintArticles(searchKeyword);
 
 		if (forPrintArticles.size() == 0) {
 			System.out.println("검색결과가 존재하지 않습니다.");
@@ -103,7 +105,7 @@ public class ArticleController extends Controller {
 
 		int id = Integer.parseInt(commandBits[2]);
 
-		Article targetArticle = getArticleById(id);
+		Article targetArticle = articleService.getArticleById(id);
 
 		if (targetArticle == null) {
 			System.out.printf("%d번 게시물이 존재하지 않습니다\n", id);
@@ -125,7 +127,7 @@ public class ArticleController extends Controller {
 
 		int id = Integer.parseInt(commandBits[2]);
 
-		Article foundArticle = getArticleById(id);
+		Article foundArticle = articleService.getArticleById(id);
 
 		if (foundArticle == null) {
 			System.out.printf("%d번 게시물이 존재하지 않습니다\n", id);
@@ -154,7 +156,7 @@ public class ArticleController extends Controller {
 
 		int id = Integer.parseInt(commandBits[2]);
 
-		Article foundArticle = getArticleById(id);
+		Article foundArticle = articleService.getArticleById(id);
 
 		if (foundArticle == null) {
 			System.out.printf("%d번 게시물이 존재하지 않습니다\n", id);
@@ -166,7 +168,7 @@ public class ArticleController extends Controller {
 			return;
 		}
 
-		articles.remove(foundArticle);
+		articleService.remove(foundArticle);
 		System.out.printf("%d번 게시물이 삭제되었습니다.\n", id);
 	}
 
@@ -180,7 +182,5 @@ public class ArticleController extends Controller {
 		Container.articleDao
 				.add(new Article(Container.articleDao.getNewId(), Util.getCurrentDate(), 2, "제목3", "내용3", 33));
 	}
-
-	
 
 }

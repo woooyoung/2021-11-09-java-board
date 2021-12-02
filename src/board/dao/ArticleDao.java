@@ -3,7 +3,6 @@ package board.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import board.container.Container;
 import board.dto.Article;
 
 public class ArticleDao extends Dao {
@@ -55,6 +54,10 @@ public class ArticleDao extends Dao {
 		}
 
 		return null;
+	}
+
+	public void remove(Article foundArticle) {
+		articles.remove(foundArticle);
 	}
 
 }
