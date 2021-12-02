@@ -19,7 +19,6 @@ public class ArticleController extends Controller {
 	public ArticleController(Scanner sc) {
 		this.sc = sc;
 
-		articles = Container.articleDao.articles;
 	}
 
 	public void doAction(String command, String actionMethodName) {
@@ -68,35 +67,20 @@ public class ArticleController extends Controller {
 
 	private void showList() {
 
-		if (articles.size() == 0) {
-			System.out.println("게시물이 없습니다.");
-			return;
-		}
-
 		String searchKeyword = command.substring("article list".length()).trim();
 
-		List<Article> forListArticles = articles;
+		List<Article> forPrintArticles = Container.articleService.getForPrintArticles(searchKeyword);
 
-		if (searchKeyword.length() > 0) {
-			forListArticles = new ArrayList<>();
-
-			for (Article article : articles) {
-				if (article.title.contains(searchKeyword)) {
-					forListArticles.add(article);
-				}
-			}
-
-			if (forListArticles.size() == 0) {
-				System.out.println("검색결과가 존재하지 않습니다.");
-				return;
-			}
+		if (forPrintArticles.size() == 0) {
+			System.out.println("검색결과가 존재하지 않습니다.");
+			return;
 		}
 
 		System.out.printf("=== 게시물 목록 ===\n");
 		System.out.println("번호  |   작성자   |  제목   |  조회수");
 
-		for (int i = forListArticles.size() - 1; i >= 0; i--) {
-			Article currentArticle = forListArticles.get(i);
+		for (int i = forPrintArticles.size() - 1; i >= 0; i--) {
+			Article currentArticle = forPrintArticles.get(i);
 
 			String writerName = null;
 
@@ -186,29 +170,6 @@ public class ArticleController extends Controller {
 		System.out.printf("%d번 게시물이 삭제되었습니다.\n", id);
 	}
 
-	private int getArticleIndexById(int id) {
-		int i = 0;
-		for (Article article : articles) {
-
-			if (article.id == id) {
-				return i;
-			}
-			i++;
-		}
-		return -1;
-	}
-
-	private Article getArticleById(int id) {
-
-		int index = getArticleIndexById(id);
-
-		if (index != -1) {
-			return articles.get(index);
-		}
-
-		return null;
-	}
-
 	public void makeTestData() {
 		System.out.println("테스트를 위한 게시물 데이터를 생성합니다.");
 
@@ -219,5 +180,7 @@ public class ArticleController extends Controller {
 		Container.articleDao
 				.add(new Article(Container.articleDao.getNewId(), Util.getCurrentDate(), 2, "제목3", "내용3", 33));
 	}
+
+	
 
 }
