@@ -1,23 +1,22 @@
 package board.controller;
 
-import java.util.List;
 import java.util.Scanner;
 
 import board.container.Container;
 import board.dto.Member;
+import board.service.MemberService;
 import board.util.Util;
 
 public class MemberController extends Controller {
 
 	private Scanner sc;
-	private List<Member> members;
 	private String command;
 	private String actionMethodName;
+	private MemberService memberService;
 
 	public MemberController(Scanner sc) {
 		this.sc = sc;
-
-		members = Container.memberDao.members;
+		memberService = Container.memberService;
 	}
 
 	public void doAction(String command, String actionMethodName) {
@@ -68,7 +67,7 @@ public class MemberController extends Controller {
 		System.out.printf("로그인 비밀번호 : ");
 		String loginPw = sc.nextLine();
 
-		Member member = getMemberByLoginId(loginId);
+		Member member = memberService.getMemberByLoginId(loginId);
 
 		if (member == null) {
 			System.out.println("해당 회원은 존재하지 않습니다.");
@@ -85,7 +84,7 @@ public class MemberController extends Controller {
 	}
 
 	private void doJoin() {
-		int id = Container.memberDao.getNewId();
+		int id = memberService.getNewId();
 
 		String loginId = null;
 
@@ -125,44 +124,21 @@ public class MemberController extends Controller {
 		String regDate = Util.getCurrentDate();
 
 		Member member = new Member(id, regDate, loginId, loginPw, name);
-		Container.memberDao.add(member);
+
+		memberService.join(member);
 
 		System.out.printf("%d번 회원 가입이 완료되었습니다.\n", id);
 	}
 
-	private Member getMemberByLoginId(String loginId) {
-		int index = getMemberIndexByLoginId(loginId);
-
-		if (index == -1) {
-			return null;
-		}
-
-		return members.get(index);
-	}
-
 	private boolean isJoinableLoginId(String loginId) {
 
-		int index = getMemberIndexByLoginId(loginId);
+		int index = memberService.getMemberIndexByLoginId(loginId);
 
 		if (index == -1) {
 			return true;
 		}
 
 		return false;
-	}
-
-	private int getMemberIndexByLoginId(String loginId) {
-		int i = 0;
-
-		for (Member member : members) {
-			if (member.loginId.equals(loginId)) {
-				return i;
-			}
-
-			i++;
-		}
-
-		return -1;
 	}
 
 	public void makeTestData() {

@@ -50,7 +50,7 @@ public class ArticleController extends Controller {
 	}
 
 	private void doWrite() {
-		int id = Container.articleDao.getNewId();
+		int id = articleService.getNewId();
 
 		System.out.printf("제목 : ");
 		String title = sc.nextLine();
@@ -62,7 +62,7 @@ public class ArticleController extends Controller {
 
 		Article article = new Article(id, regDate, loginedMember.id, title, body);
 
-		Container.articleDao.add(article);
+		articleService.write(article);
 
 		System.out.printf("%d번 게시물 등록이 완료되었습니다.\n", id);
 	}
