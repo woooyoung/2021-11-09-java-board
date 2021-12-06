@@ -39,4 +39,8 @@ public class ArticleService {
 		articleDao.add(article);
 	}
 
+	public List<Article> getForPrintArticles() {
+		return articleDao.getArticles(null);
+	}
+
 }
